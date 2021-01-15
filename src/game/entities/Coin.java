@@ -67,10 +67,10 @@ public class Coin {
 		return visible;
 	}
 	
-	public Rectangle getRectangle() {
+	public Rectangle getBoundCar2()
+	{
 		return new Rectangle(x,y,width,height);
 	}
-	
 	public void update(int dy)
 	{
 	 y+=dy;

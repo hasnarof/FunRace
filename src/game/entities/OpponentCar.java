@@ -7,11 +7,9 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-import game.tools.ImageLoader;
-
 public abstract class OpponentCar {
 	
-	protected BufferedImage image;
+	protected BufferedImage img;
 	int x;
 	int y;
 	int dx;
@@ -21,11 +19,15 @@ public abstract class OpponentCar {
 	protected int height;
 	
 	public OpponentCar(String pathImage) {
+		try {
+			URL carImg = this.getClass().getResource(pathImage);
+			img=ImageIO.read(carImg);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
-		image = ImageLoader.loadImage(pathImage);
-		
-		width = image.getWidth(null);
-		height = image.getHeight(null);
+		width = img.getWidth(null);
+		height = img.getHeight(null);
 		
 		generateRandomPosition();
 	}
@@ -38,14 +40,14 @@ public abstract class OpponentCar {
 		y = y1*area-600;
 	}
 	
-	public Rectangle getRectangle() {
+	public Rectangle getBoundCar1() {
 		return new Rectangle(x, y, width, height);
 	}
 
 	abstract public void move();
 	
-	public void setSpeed (int dy){
-		dx = dy;
+	public void acc(int dya){
+		dx = dya;
 	}
 	
 	public void setVisible(boolean visible){
@@ -56,8 +58,8 @@ public abstract class OpponentCar {
 		return visible;
 	}
 	
-	public BufferedImage getImage(){
-		return image;
+	public Image getImage(){
+		return img;
 	}
 	
 	public int getX(){
