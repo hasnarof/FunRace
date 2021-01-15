@@ -22,108 +22,113 @@ import game.entities.Coin;
 import game.entities.OpponentOne;
 import game.entities.OpponentThree;
 import game.entities.OpponentTwo;
+import game.entities.PlayerCar;
+import game.tools.ImageLoader;
 
 
 //@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements ActionListener {
-	Timer t;
+	Timer timer;
 	int count;
-	int count1;
-	int coinCount;
-	int coincount;
-	private static int z,z1;
-	Background bg;
-	int acc;
+	int deltaScore;
+	int deltaCoinScore;
+	int currentCoinScore;
+	private int finalScore,finalCoinScore;
+	
+	int currentSpeed;
 	private int menu;
-	private double x = 300;
-	private double y= 535; //posisi mulai pemain
-	private double dx,dy;
-	private	BufferedImage player,front;
-	private OpponentOne op1;
-	private OpponentTwo op2;
-	private OpponentThree op3;
-	int score;
-	private boolean ingame=false;
-	private Coin c;
-	private boolean ingame1=true;
+	
+	private	BufferedImage frontScreen;
+	
+	Background background;
+	PlayerCar player;
+	OpponentOne opponent1;
+	OpponentTwo opponent2;
+	OpponentThree opponent3;
+	
+	int currentScore;
+	
+	private boolean inGameState=false;
+	private Coin coin;
+	private boolean welcomeScreenState=true;
+	
 	public GamePanel()
 	{
 		
 		addKeyListener(new KeyMenu());
 		setFocusable(true);
-		try{
-		URL car1=this.getClass().getResource("/res/car1.png");
-		player=ImageIO.read(car1);
 		
-		URL front1=this.getClass().getResource("/res/loadingscreen2.png");
-		front=ImageIO.read(front1);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		op1 = new OpponentOne();
-		op2 = new OpponentTwo();
-		op3=new OpponentThree();
-		bg = new Background();
-		c = new Coin();
-		t = new Timer(20, this)	;
-		t.start();
+		player = new PlayerCar();
+		
+		frontScreen = ImageLoader.loadImage("/res/loadingscreen2.png");
+				
+		opponent1 = new OpponentOne();
+		opponent2 = new OpponentTwo();
+		opponent3 = new OpponentThree();
+		background = new Background();
+		coin = new Coin();
+		
+		timer = new Timer(20, this)	;
+		timer.start();
 	}
 	
 	public void paint(Graphics g)
 	{
-		if(ingame1)
+		if(welcomeScreenState)
 		{
-			g.drawImage(front, 0, 0, this);
+			g.drawImage(frontScreen, 0, 0, this);
 			if(menu>=150){
-				ingame =true;
-				ingame1=false;
+				inGameState = true;
+				welcomeScreenState = false;
 			}
 		}
 		
-		if(ingame)
+		if(inGameState)
 		{
-			for(int i=0; i<2; i++)
-			{
-				g.drawImage(bg.getImgBG(),i,0,this);
+			for(int i=0; i<2; i++){
+				g.drawImage(background.getBackRoad(),i,0,this);
 			}
 
 			g.setColor(new Color(240, 208, 83));
 			Font f=new Font("Consolas",Font.PLAIN,20);
 			g.setFont(f);
 			
-			g.drawString("Coin  : " +coincount, 30, 50);
-			g.drawString("SCORE : " +score, 30, 70);
-			g.drawImage(bg.getImage(), bg.getX(), bg.getY(), this);
-			g.drawImage(op2.getImage(), op2.getX(), op2.getY(), this);
-			g.drawImage(op1.getImage(), op1.getX(), op1.getY(), this);
-			g.drawImage(op3.getImage(), op3.getX(), op3.getY(), this);
+			g.drawString("Coin  : " +currentCoinScore, 30, 50);
+			g.drawString("SCORE : " +currentScore, 30, 70);
+			
+			g.drawImage(background.getRoad(), background.getRoadX(), background.getRoadY(), this);
+			
+			g.drawImage(opponent2.getImage(), opponent2.getX(), opponent2.getY(), this);
+			g.drawImage(opponent1.getImage(), opponent1.getX(), opponent1.getY(), this);
+			g.drawImage(opponent3.getImage(), opponent3.getX(), opponent3.getY(), this);
 		
 			// drawing player car
-			g.drawImage(player, (int) x,(int) y, this);
+			g.drawImage(player.getImage(), (int) player.getX(),(int) player.getY(), this);
 			
-			g.drawImage(c.getImage(), c.getX(), c.getY(), null);
-			z=score;
+			g.drawImage(coin.getImage(), coin.getX(), coin.getY(), null);
+			
+			finalScore = currentScore;
 		}
 		
-		else if(ingame==false && ingame1==false){
+		else if(inGameState == false && welcomeScreenState == false){
 			
-			for(int i=0;i<10;i++)
-			{
-				g.drawImage(bg.getImgBG(),i,0,this);
+			for(int i=0;i<10;i++) {
+				g.drawImage(background.getBackRoad(),i,0,this);
 			}
-			Font f=new Font("Lucida Console",Font.BOLD,28);
-			g.setFont(f);
 			
+			Font f = new Font("Lucida Console",Font.BOLD,28);
+			g.setFont(f);
 			g.drawString("GAME OVER", 265, 150);
-			g.drawString("SCORE "+z, 270, 300);
-		   int c1=z1;
-		   c.setVisible(false);
-		   coinCount=0;
-		   if(c.isVisible()==false)
-			   g.drawString("Coin Count "+c1, 265, 340);
-		   g.drawString("Press Space to Play Again", 135, 480);
+			g.drawString("SCORE "+finalScore, 270, 300);
+			
+//			int c1=z1;
+			coin.setVisible(false);
+			deltaCoinScore=0;
+			
+			if(coin.isVisible()==false)
+				g.drawString("Coin Count "+finalCoinScore, 265, 340);
+			
+			g.drawString("Press Space to Play Again", 135, 480);
 			
 		}
 		
@@ -133,100 +138,101 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 		update();
-		op3.move();
-		op1.move();
-		op2.move();
+		opponent3.move();
+		opponent1.move();
+		opponent2.move();
 		checkCollision();
 	}
 	
 	
-	public void checkCollision()
-	{
-		count1 = 4;
-		acc = 6;
+	public void checkCollision(){
+		deltaScore = 4;
+		currentSpeed = 6;
 		
-		Rectangle ImageCar2=op2.getBoundCar1();
-		Rectangle ImageCar3=op3.getBoundCar1();
-		Rectangle ImageCar1=op1.getBoundCar1();
-		Rectangle coinImg=c.getBoundCar2();
-		Rectangle ImageCarPlayer=new Rectangle((int)x,(int)y,player.getWidth(null),player.getHeight(null));
+		Rectangle op1 = opponent1.getRectangle();
+		Rectangle op2 = opponent2.getRectangle();
+		Rectangle op3 = opponent3.getRectangle();
+		Rectangle c = coin.getRectangle();
 		
-		if(ImageCar1.intersects(ImageCarPlayer)){
-			ingame = false;
-			c.setVisible(false);
+		Rectangle p = player.getRectangle();
+		
+		if(op1.intersects(p)){
+			inGameState = false;
+			coin.setVisible(false);
 		}
-		if(ImageCar3.intersects(ImageCarPlayer)){
-			ingame = false;
-			c.setVisible(false);
-		}
-		if(ImageCar2.intersects(ImageCarPlayer))
-		{
-			ingame = false;
-			c.setVisible(false);
+
+		if(op2.intersects(p)){
+			inGameState = false;
+			coin.setVisible(false);
 		}		
-		if(coinImg.intersects(ImageCarPlayer))
-		{
-			c.generateRandomPosition();
-			coincount = coincount + coinCount;
+		
+		if(op3.intersects(p)){
+			inGameState = false;
+			coin.setVisible(false);
+		}
+		
+		if(c.intersects(p)){
+			coin.generateRandomPosition();
+			currentCoinScore = currentCoinScore + deltaCoinScore;
 		}
 		
 	}
 	
-	public void update()
-	{
+	public void update() {
 		
-		if(c.isVisible()==true)
-			coinCount=1;
+		if(coin.isVisible()==true)
+			deltaCoinScore=1;
 		else
-			coinCount=0;
+			deltaCoinScore=0;
 		
-		z1 = coincount;
+		finalCoinScore = currentCoinScore;
 		menu += 2;
-		x += dx;
-		y -= dy;
+		
+		player.setX(player.getX() + player.getDx());
+		player.setY(player.getY() - player.getDy());
 		
 		//maks gerak ke kanan
-		if(x>=482)
-			x = 482;
-		//maks gerak ke kiri
-		if(x<=260)
-			x=260;
+		if(player.getX() >= 482)
+			player.setX(482);
 		
-		score += count1;
-		count = score;
+		//maks gerak ke kiri
+		if(player.getX() <= 260)
+			player.setX(260);;
+		
+		currentScore += deltaScore;
+		count = currentScore;
 		
 		if(count>1000){
-			bg.acceleration(7);
-			op1.acc(10);
-			op2.acc(9);
-			op3.acc(8);
-			c.update(6);
+			background.setSpeed(7);
+			opponent1.setSpeed(10);
+			opponent2.setSpeed(9);
+			opponent3.setSpeed(8);
+			coin.update(6);
 		}
 		
-		if(count>3000)
-		{
-			bg.acceleration(8);
-			count1=10;
-			op1.acc(14);
-			op2.acc(15);
-			op3.acc(13);
-			c.update(8);
+		if(count>3000){
+			background.setSpeed(8);
+			deltaScore=10;
+			opponent1.setSpeed(14);
+			opponent2.setSpeed(15);
+			opponent3.setSpeed(13);
+			coin.update(8);
 		}
 		
 		if(count>5000){
-			bg.acceleration(9);
-			count1=25;
-			op1.acc(18);
-			op2.acc(20);
-			op3.acc(19);
-			c.update(10);
+			background.setSpeed(9);
+			deltaScore=25;
+			opponent1.setSpeed(18);
+			opponent2.setSpeed(20);
+			opponent3.setSpeed(19);
+			coin.update(10);
 		}
-		else{
-			bg.acceleration(acc);
-			op1.acc(7);
-			op2.acc(5);
-			op3.acc(6);
-			c.update(acc);
+		else {
+			background.setSpeed(currentSpeed);
+			opponent1.setSpeed(7);
+			opponent2.setSpeed(5);
+			opponent3.setSpeed(6);
+			coin.update(currentSpeed);
 		}
 	}
 	
@@ -236,40 +242,38 @@ public class GamePanel extends JPanel implements ActionListener {
 		public void keyPressed(KeyEvent e){
 			int key=e.getKeyCode();
 			
-			if(ingame1==false && ingame==false && key==KeyEvent.VK_SPACE){
-				score=0;
-				z=0;
+			if(welcomeScreenState==false && inGameState==false && key==KeyEvent.VK_SPACE){
+				currentScore=0;
+				finalScore=0;
 				count=0;
-				ingame=true;
+				inGameState=true;
 				new GamePanel();
 				//new Game();
-				c.setVisible(true);
+				coin.setVisible(true);
 				
-				coincount=0;
+				currentCoinScore=0;
 			}	
 		
-			if(key==KeyEvent.VK_RIGHT)
-			{
-				dx =+ 3.5;
+			if(key==KeyEvent.VK_RIGHT){
+				player.setDx(player.getDx() + 3.5);
 			}
-			if(key==KeyEvent.VK_LEFT)
-			{
-				dx =- 3.5;
+			
+			if(key==KeyEvent.VK_LEFT){
+				player.setDx(player.getDx() - 3.5);
 			}
 			
 		}
-		public void keyReleased(KeyEvent e)
-		{
+		
+		public void keyReleased(KeyEvent e){
 			int key=e.getKeyCode();
-			if(key==KeyEvent.VK_RIGHT)
-			{
-				dx=0;
-				dy=0;
+			if(key==KeyEvent.VK_RIGHT){
+				player.setDx(0);
+				player.setDy(0);
 			}
-			if(key==KeyEvent.VK_LEFT)
-			{
-				dx=0;
-				dy=0;
+			
+			if(key==KeyEvent.VK_LEFT){
+				player.setDx(0);
+				player.setDy(0);
 			}	
 		}	
 	}
