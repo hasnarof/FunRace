@@ -1,3 +1,4 @@
+package game;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -6,22 +7,22 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 
-public class BackGround {
+public class Background {
 	
 	private	BufferedImage road, background;
 	private int x, y; 
 	private int dy;
 
 	
-	public BackGround()
+	public Background()
 	{
 		x=200;
 	    y=-700;
 		
 		try{
-			URL roadImgUrl=this.getClass().getResource("res/(long)portraitRoadBG.png");
+			URL roadImgUrl=this.getClass().getResource("/res/(long)portraitRoadBG.png");
 			road=ImageIO.read(roadImgUrl);
-			URL backgroungImgUrl=this.getClass().getResource("res/(long)background.png");
+			URL backgroungImgUrl=this.getClass().getResource("/res/(long)background.png");
 			background=ImageIO.read(backgroungImgUrl);
 		}
 		catch(Exception e){}

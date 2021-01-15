@@ -1,3 +1,4 @@
+package game.entities;
 
 import java.awt.Image;
 import java.awt.Rectangle;

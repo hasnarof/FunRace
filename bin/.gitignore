@@ -1,11 +1,4 @@
-/BackGround.class
-/Coin.class
-/GameLauncher.class
-/GamePanel$KeyMenu.class
-/GamePanel.class
-/OpponentCar.class
-/OpponentOne.class
-/OpponentThree.class
+/res/
 /OpponentTwo.class
 /game/
-/res/
+/Background.class
