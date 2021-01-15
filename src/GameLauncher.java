@@ -1,4 +1,3 @@
-package game;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -6,13 +5,14 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+
 public class GameLauncher extends JFrame {
 	private  BufferedImage img1;
 	public GameLauncher()
 	{
 		try{
 			//logo app
-			URL icon=this.getClass().getResource("/res/car1.png");
+			URL icon=this.getClass().getResource("res/car1.png");
 			img1=ImageIO.read(icon);
 			}
 			catch(Exception e)

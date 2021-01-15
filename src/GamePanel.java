@@ -1,4 +1,3 @@
-package game;
 
 
 import java.awt.Color;
@@ -16,12 +15,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import game.entities.Coin;
-import game.entities.OpponentOne;
-import game.entities.OpponentThree;
-import game.entities.OpponentTwo;
-
-
 //@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements ActionListener {
 	Timer t;
@@ -30,7 +23,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	int coinCount;
 	int coincount;
 	private static int z,z1;
-	Background bg;
+	BackGround bg;
 	int acc;
 	private int menu;
 	private double x = 300;
@@ -50,10 +43,10 @@ public class GamePanel extends JPanel implements ActionListener {
 		addKeyListener(new KeyMenu());
 		setFocusable(true);
 		try{
-		URL car1=this.getClass().getResource("/res/car1.png");
+		URL car1=this.getClass().getResource("res/car1.png");
 		player=ImageIO.read(car1);
 		
-		URL front1=this.getClass().getResource("/res/loadingscreen2.png");
+		URL front1=this.getClass().getResource("res/loadingscreen2.png");
 		front=ImageIO.read(front1);
 		}
 		catch(Exception e)
@@ -63,7 +56,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		op1 = new OpponentOne();
 		op2 = new OpponentTwo();
 		op3=new OpponentThree();
-		bg = new Background();
+		bg = new BackGround();
 		c = new Coin();
 		t = new Timer(20, this)	;
 		t.start();

@@ -1,4 +1,3 @@
-package game.entities;
 
 
 import java.awt.Image;
@@ -22,7 +21,7 @@ public class Coin {
 	{
 		try{
 		
-		URL carImge=this.getClass().getResource("/res/coin.png");
+		URL carImge=this.getClass().getResource("res/coin.png");
 		img2=ImageIO.read(carImge);
 		
 		}

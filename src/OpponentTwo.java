@@ -1,4 +1,3 @@
-package game.entities;
 
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -9,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class OpponentTwo extends OpponentCar {
 	
-	private static String pathImage = "/res/(pressed)car3.png";
+	private static String pathImage = "res/(pressed)car3.png";
 	
 	public OpponentTwo() {
 		
