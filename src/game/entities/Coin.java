@@ -1,6 +1,7 @@
 package game.entities;
 
 //coba 
+//coba lagi
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
