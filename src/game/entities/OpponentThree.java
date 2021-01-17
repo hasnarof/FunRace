@@ -20,7 +20,7 @@ public class OpponentThree extends OpponentCar {
 	
 	public void move()
 	{
-		y += dx;
+		y += dy;
 		if(y >= 1150)
 			super.generateRandomPosition();
 	}

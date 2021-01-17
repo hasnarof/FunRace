@@ -23,18 +23,23 @@ import game.entities.OpponentOne;
 import game.entities.OpponentThree;
 import game.entities.OpponentTwo;
 import game.entities.PlayerCar;
+import game.entities.Score;
 import game.tools.ImageLoader;
 
 
 //@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements ActionListener {
 	Timer timer;
-	int count;
-	int deltaScore;
-	int deltaCoinScore;
-	int currentCoinScore;
-	private int finalScore,finalCoinScore;
 	
+	Score score;
+	
+//	int score.score.currentScore;
+//	int score.checkScore;
+//	int score.deltaScore;
+//	int score.deltaCoinScore;
+//	int score.currentCoinScore;
+//	int score.finalScore,score.finalCoinScore;
+//	
 	int currentSpeed;
 	private int menu;
 	
@@ -46,7 +51,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	OpponentTwo opponent2;
 	OpponentThree opponent3;
 	
-	int currentScore;
+	
 	
 	private boolean inGameState=false;
 	private Coin coin;
@@ -68,8 +73,12 @@ public class GamePanel extends JPanel implements ActionListener {
 		background = new Background();
 		coin = new Coin();
 		
+		score = new Score();
+		
 		timer = new Timer(20, this)	;
 		timer.start();
+		
+		
 	}
 	
 	public void paint(Graphics g)
@@ -93,40 +102,48 @@ public class GamePanel extends JPanel implements ActionListener {
 			Font f=new Font("Consolas",Font.PLAIN,20);
 			g.setFont(f);
 			
-			g.drawString("Coin  : " +currentCoinScore, 30, 50);
-			g.drawString("SCORE : " +currentScore, 30, 70);
+			g.drawString("Coin  : " +score.currentCoinScore, 30, 50);
+			g.drawString("SCORE : " +score.currentScore, 30, 70);
 			
 			g.drawImage(background.getRoad(), background.getRoadX(), background.getRoadY(), this);
 			
-			g.drawImage(opponent2.getImage(), opponent2.getX(), opponent2.getY(), this);
-			g.drawImage(opponent1.getImage(), opponent1.getX(), opponent1.getY(), this);
-			g.drawImage(opponent3.getImage(), opponent3.getX(), opponent3.getY(), this);
+			g.drawImage(opponent2.getImage(), (int)opponent2.getX(), (int)opponent2.getY(), this);
+			g.drawImage(opponent1.getImage(), (int)opponent1.getX(), (int)opponent1.getY(), this);
+			g.drawImage(opponent3.getImage(), (int)opponent3.getX(), (int)opponent3.getY(), this);
 		
 			// drawing player car
 			g.drawImage(player.getImage(), (int) player.getX(),(int) player.getY(), this);
 			
 			g.drawImage(coin.getImage(), coin.getX(), coin.getY(), null);
 			
-			finalScore = currentScore;
+			score.finalScore = score.currentScore;
 		}
 		
 		else if(inGameState == false && welcomeScreenState == false){
+			
+			score.setHighestScore(score.finalScore);
+			score.setHighestCoinScore(score.finalCoinScore);
 			
 			for(int i=0;i<10;i++) {
 				g.drawImage(background.getBackRoad(),i,0,this);
 			}
 			
-			Font f = new Font("Lucida Console",Font.BOLD,28);
+			Font f = new Font("Lucida Console",Font.BOLD,20);
+			g.setFont(f);
+			g.drawString("HIGHEST SCORE EVER "+score.getHighestScore(), 10, 25);
+			g.drawString("HIGHEST COIN COUNT EVER "+ score.getHighestCoinScore(), 10, 50);
+			
+			f = new Font("Lucida Console",Font.BOLD,28);
 			g.setFont(f);
 			g.drawString("GAME OVER", 265, 150);
-			g.drawString("SCORE "+finalScore, 270, 300);
+			g.drawString("SCORE "+score.finalScore, 270, 300);
 			
-//			int c1=z1;
+			
 			coin.setVisible(false);
-			deltaCoinScore=0;
+			score.deltaCoinScore=0;
 			
 			if(coin.isVisible()==false)
-				g.drawString("Coin Count "+finalCoinScore, 265, 340);
+				g.drawString("Coin Count "+score.finalCoinScore, 265, 340);
 			
 			g.drawString("Press Space to Play Again", 135, 480);
 			
@@ -146,7 +163,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	
 	
 	public void checkCollision(){
-		deltaScore = 4;
+		score.deltaScore = 4;
 		currentSpeed = 6;
 		
 		Rectangle op1 = opponent1.getRectangle();
@@ -173,7 +190,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		
 		if(c.intersects(p)){
 			coin.generateRandomPosition();
-			currentCoinScore = currentCoinScore + deltaCoinScore;
+			score.currentCoinScore = score.currentCoinScore + score.deltaCoinScore;
 		}
 		
 	}
@@ -181,28 +198,28 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void update() {
 		
 		if(coin.isVisible()==true)
-			deltaCoinScore=1;
+			score.deltaCoinScore=1;
 		else
-			deltaCoinScore=0;
+			score.deltaCoinScore=0;
 		
-		finalCoinScore = currentCoinScore;
+		score.finalCoinScore = score.currentCoinScore;
 		menu += 2;
 		
 		player.setX(player.getX() + player.getDx());
 		player.setY(player.getY() - player.getDy());
 		
 		//maks gerak ke kanan
-		if(player.getX() >= 482)
-			player.setX(482);
+		if(player.getX() >= background.getRightRoadBound())
+			player.setX( background.getRightRoadBound() );
 		
 		//maks gerak ke kiri
-		if(player.getX() <= 260)
-			player.setX(260);;
+		if(player.getX() <= background.getLeftRoadBound())
+			player.setX( background.getLeftRoadBound() );;
 		
-		currentScore += deltaScore;
-		count = currentScore;
+		score.currentScore += score.deltaScore;
+		score.checkScore = score.currentScore;
 		
-		if(count>1000){
+		if(score.checkScore>1000){
 			background.setSpeed(7);
 			opponent1.setSpeed(10);
 			opponent2.setSpeed(9);
@@ -210,18 +227,18 @@ public class GamePanel extends JPanel implements ActionListener {
 			coin.update(6);
 		}
 		
-		if(count>3000){
+		if(score.checkScore>3000){
 			background.setSpeed(8);
-			deltaScore=10;
+			score.deltaScore=10;
 			opponent1.setSpeed(14);
 			opponent2.setSpeed(15);
 			opponent3.setSpeed(13);
 			coin.update(8);
 		}
 		
-		if(count>5000){
+		if(score.checkScore>5000){
 			background.setSpeed(9);
-			deltaScore=25;
+			score.deltaScore=25;
 			opponent1.setSpeed(18);
 			opponent2.setSpeed(20);
 			opponent3.setSpeed(19);
@@ -243,15 +260,17 @@ public class GamePanel extends JPanel implements ActionListener {
 			int key=e.getKeyCode();
 			
 			if(welcomeScreenState==false && inGameState==false && key==KeyEvent.VK_SPACE){
-				currentScore=0;
-				finalScore=0;
-				count=0;
+				
+				score.currentScore = 0;
+				score.finalScore=0;
+				score.checkScore=0;
 				inGameState=true;
+				
 				new GamePanel();
 				//new Game();
 				coin.setVisible(true);
 				
-				currentCoinScore=0;
+				score.currentCoinScore=0;
 			}	
 		
 			if(key==KeyEvent.VK_RIGHT){

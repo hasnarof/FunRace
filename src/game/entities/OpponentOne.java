@@ -19,7 +19,7 @@ public class OpponentOne extends OpponentCar {
 	
 	public void move()
 	{
-		y+=dx;
+		y+=dy;
 		if(y >= 900)
 			generateRandomPosition();
 	}

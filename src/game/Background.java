@@ -11,13 +11,16 @@ import game.tools.ImageLoader;
 
 public class Background {
 	
+	private static final int LEFT_ROAD_BOUND = 260;
+	private static final int RIGHT_ROAD_BOUND = 482;
+	
+
 	private	BufferedImage road, backRoad;
 	private int roadX, roadY; 
 	private int dy;
 
 	
-	public Background()
-	{
+	public Background(){
 		roadX=200;
 	    roadY=-700;
 	    
@@ -60,6 +63,16 @@ public class Background {
 	 public void setSpeed(int dy){
 		 this.dy = dy;
 		 update();
+	 }
+	 
+	 
+	 public static int getLeftRoadBound() {
+		 return LEFT_ROAD_BOUND;
+	 }
+
+
+	 public static int getRightRoadBound() {
+		 return RIGHT_ROAD_BOUND;
 	 }
 
 }

@@ -18,7 +18,7 @@ public class OpponentTwo extends OpponentCar {
 	}
 	
 	public void move() {
-		y += dx;
+		y += dy;
 		if(y >= 680)
 		super.generateRandomPosition();	
 	}
