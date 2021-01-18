@@ -10,9 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -27,15 +30,8 @@ import game.tools.ImageLoader;
 //@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements ActionListener {
 	Timer timer;
-	
 	Score score;
-	
-//	int score.score.currentScore;
-//	int score.checkScore;
-//	int score.deltaScore;
-//	int score.deltaCoinScore;
-//	int score.currentCoinScore;
-//	int score.finalScore,score.finalCoinScore;
+//	GameSound sound;
 //	
 	int currentSpeed;
 	private int menu;
@@ -72,7 +68,9 @@ public class GamePanel extends JPanel implements ActionListener {
 		
 		score = new Score();
 		
-		timer = new Timer(20, this)	;
+//		sound = new GameSound();
+		
+		timer = new Timer(20, this);
 		timer.start();
 		
 		
@@ -261,9 +259,11 @@ public class GamePanel extends JPanel implements ActionListener {
 				score.currentScore = 0;
 				score.finalScore=0;
 				score.checkScore=0;
+				
 				inGameState=true;
 				
 				new GamePanel();
+				
 				//new Game();
 				coin.setVisible(true);
 				
