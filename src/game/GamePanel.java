@@ -1,8 +1,6 @@
 package game;
 
 //test
-
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -25,7 +23,6 @@ import game.entities.OpponentTwo;
 import game.entities.PlayerCar;
 import game.entities.Score;
 import game.tools.ImageLoader;
-
 
 //@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements ActionListener {
@@ -164,7 +161,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	
 	public void checkCollision(){
 		score.deltaScore = 4;
-		currentSpeed = 6;
+		currentSpeed = 7;
 		
 		Rectangle op1 = opponent1.getRectangle();
 		Rectangle op2 = opponent2.getRectangle();
@@ -219,7 +216,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		score.currentScore += score.deltaScore;
 		score.checkScore = score.currentScore;
 		
-		if(score.checkScore>1000){
+		if(score.checkScore>2000){
 			background.setSpeed(7);
 			opponent1.setSpeed(10);
 			opponent2.setSpeed(9);
@@ -227,7 +224,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			coin.update(6);
 		}
 		
-		if(score.checkScore>3000){
+		if(score.checkScore>5000){
 			background.setSpeed(8);
 			score.deltaScore=10;
 			opponent1.setSpeed(14);
@@ -236,7 +233,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			coin.update(8);
 		}
 		
-		if(score.checkScore>5000){
+		if(score.checkScore>7000){
 			background.setSpeed(9);
 			score.deltaScore=25;
 			opponent1.setSpeed(18);
