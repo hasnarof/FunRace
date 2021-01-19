@@ -4,12 +4,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import game.entities.Score;
 import game.tools.ImageLoader;
 
 public class GameStateManager {
 	
 	private GameState[] gameStates;
 	private int currentState;
+	Score score;
 	
 	public static final int NUMGAMESTATES = 3;
 	public static final int MENUSTATE = 0;
@@ -30,15 +32,20 @@ public class GameStateManager {
 			gameStates[state] = new MenuState(this);
 		if(state == LEVEL1STATE)
 			gameStates[state] = new Level1State(this);
+		if(state == STOPSTATE) {
+			gameStates[state] = new StopState(this, this.score);
+		}
+			
 	}
 	
 	private void unloadState(int state) {
 		gameStates[state] = null;
 	}
 	
-	public void setState(int state) {
+	public void setState(int state, Score score) {
 		unloadState(currentState);
 		currentState = state;
+		this.score = score;
 		loadState(currentState);
 		//gameStates[currentState].init();
 	}
@@ -60,11 +67,14 @@ public class GameStateManager {
 	}
 	
 	public void keyPressed(int k) {
-		gameStates[currentState].keyPressed(k);
+		if(gameStates[currentState] != null)
+			gameStates[currentState].keyPressed(k);
 	}
 	
 	public void keyReleased(int k) {
-		gameStates[currentState].keyReleased(k);
+		
+		if(gameStates[currentState] != null)
+			gameStates[currentState].keyReleased(k);
 	}
 	
 }
