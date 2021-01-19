@@ -6,8 +6,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import game.Background;
+import game.GameSound;
 import game.entities.Coin;
 import game.entities.OpponentOne;
 import game.entities.OpponentThree;
@@ -28,6 +34,9 @@ public class Level1State extends GameState {
 	OpponentThree opponent3;
 	Coin coin;
 	
+	GameSound raceSound;
+	GameSound coinSound;
+	
 	public Level1State(GameStateManager gsm) {
 		
 		this.gsm = gsm;
@@ -42,7 +51,24 @@ public class Level1State extends GameState {
 		
 		score = new Score();
 		
-//		sound = new GameSound();
+		try {
+			raceSound = new GameSound("/res/race1.wav");
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			coinSound = new GameSound("/res/get-coin1.wav");
+		} catch (javax.sound.sampled.UnsupportedAudioFileException | IOException
+				| javax.sound.sampled.LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		raceSound.play();
+		raceSound.getCLip().loop(Clip.LOOP_CONTINUOUSLY);
 	}
 
 	@Override
@@ -159,11 +185,21 @@ public class Level1State extends GameState {
 		Rectangle p = player.getRectangle();
 		
 		if(op1.intersects(p) || op2.intersects(p) || op3.intersects(p)){
+			try {
+				raceSound.stop();
+			} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+				e.printStackTrace();
+			}
 			gsm.setState(GameStateManager.STOPSTATE, score);
-//			coin.setVisible(false);
 		}
 		
 		if(c.intersects(p)){
+			try {
+				new GameSound("/res/get-coin1.wav").play();
+			} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			coin.generateRandomPosition();
 			score.currentCoinScore = score.currentCoinScore + score.deltaCoinScore;
 		}

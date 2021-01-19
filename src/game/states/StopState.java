@@ -31,7 +31,11 @@ public class StopState extends GameState {
 	public void init() {
 		highestScoreFont = new Font("Lucida Console",Font.BOLD,20);
 		f = new Font("Lucida Console",Font.BOLD,28);
+		
+		score.setHighestScore(score.finalScore);
+		score.setHighestCoinScore(score.finalCoinScore);
 
+		score.deltaCoinScore=0;
 	}
 
 	@Override
@@ -43,9 +47,6 @@ public class StopState extends GameState {
 
 	@Override
 	public void draw(Graphics g) {
-		
-		score.setHighestScore(score.finalScore);
-		score.setHighestCoinScore(score.finalCoinScore);
 		
 		for(int i=0;i<10;i++) {
 			g.drawImage(background.getBackRoad(),i,0,null);
@@ -59,12 +60,7 @@ public class StopState extends GameState {
 		g.drawString("GAME OVER", 265, 150);
 		g.drawString("SCORE "+score.finalScore, 270, 300);
 		
-		
-//		coin.setVisible(false);
-		score.deltaCoinScore=0;
-		
-//		if(coin.isVisible()==false)
-			g.drawString("Coin Count "+score.finalCoinScore, 265, 340);
+		g.drawString("Coin Count "+score.finalCoinScore, 265, 340);
 		
 		g.drawString("Press Space to Play Again", 135, 480);
 
