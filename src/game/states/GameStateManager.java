@@ -45,7 +45,10 @@ public class GameStateManager {
 	
 	public void update() {
 		try {
-			gameStates[currentState].update();
+			if(currentState == LEVEL1STATE) {
+				gameStates[currentState].action();
+			} else 
+				gameStates[currentState].update();
 		} catch(Exception e) {}
 	}
 	

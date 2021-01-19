@@ -71,8 +71,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 			
 			start = System.nanoTime();
 			
-			update();
 			repaint();
+			update();
+			
 			
 			elapsed = System.nanoTime() - start;
 			
@@ -96,12 +97,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-//		BufferedImage frontScreen = ImageLoader.loadImage("/res/loadingscreen2.png");
-//		g.drawImage(frontScreen, 0, 0, null);
-		
-		MenuState menu = new MenuState(gsm);
-		menu.draw(g);
 		
 		gsm.draw(g);
 	}
