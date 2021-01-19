@@ -158,17 +158,7 @@ public class Level1State extends GameState {
 		
 		Rectangle p = player.getRectangle();
 		
-		if(op1.intersects(p)){
-			gsm.setState(GameStateManager.STOPSTATE, score);
-//			coin.setVisible(false);
-		}
-
-		if(op2.intersects(p)){
-			gsm.setState(GameStateManager.STOPSTATE, score);
-//			coin.setVisible(false);
-		}		
-		
-		if(op3.intersects(p)){
+		if(op1.intersects(p) || op2.intersects(p) || op3.intersects(p)){
 			gsm.setState(GameStateManager.STOPSTATE, score);
 //			coin.setVisible(false);
 		}
