@@ -36,6 +36,7 @@ public class Level1State extends GameState {
 	
 	GameSound raceSound;
 	GameSound coinSound;
+	GameSound finishSound;
 	
 	public Level1State(GameStateManager gsm) {
 		
@@ -52,7 +53,7 @@ public class Level1State extends GameState {
 		score = new Score();
 		
 		try {
-			raceSound = new GameSound("/res/race1.wav");
+			raceSound = new GameSound("/res/chevrolet.wav");
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -60,6 +61,14 @@ public class Level1State extends GameState {
 
 		try {
 			coinSound = new GameSound("/res/get-coin1.wav");
+		} catch (javax.sound.sampled.UnsupportedAudioFileException | IOException
+				| javax.sound.sampled.LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			finishSound = new GameSound("/res/finish.wav");
 		} catch (javax.sound.sampled.UnsupportedAudioFileException | IOException
 				| javax.sound.sampled.LineUnavailableException e) {
 			// TODO Auto-generated catch block
@@ -109,7 +118,7 @@ public class Level1State extends GameState {
 		score.currentScore += score.deltaScore;
 		score.checkScore = score.currentScore;
 		
-		if(score.checkScore>2000){
+		if(score.checkScore>3500){
 			background.setSpeed(7);
 			opponent1.setSpeed(10);
 			opponent2.setSpeed(9);
@@ -190,6 +199,8 @@ public class Level1State extends GameState {
 			} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 				e.printStackTrace();
 			}
+			
+			finishSound.play();
 			gsm.setState(GameStateManager.STOPSTATE, score);
 		}
 		
