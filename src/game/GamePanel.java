@@ -27,10 +27,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private int FPS = 60;
 	private long targetTime = 1000 / FPS;
 	
-	// image
-	private BufferedImage image;
-	private Graphics2D g;
-	
 	// game state manager
 	private GameStateManager gsm;
 	
@@ -77,8 +73,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 			
 			elapsed = System.nanoTime() - start;
 			
-			wait = targetTime - elapsed / 1000000;
-			if(wait < 0) wait = 5;
+			wait = targetTime - elapsed / 1000000; // in milliseconds
+			if(wait < 0) wait = 5; // pakai elapse, wait karena takut elapsed melebihi targetTime
 			
 			try {
 				Thread.sleep(wait);

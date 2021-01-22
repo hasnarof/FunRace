@@ -1,4 +1,4 @@
-package game;
+package game.tools;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -94,9 +94,9 @@ public class GameSound {
         clip.stop(); 
         clip.close(); 
         resetAudioStream(); 
-//        currentFrame = 0L; 
-//        clip.setMicrosecondPosition(0); 
-//        this.play(); 
+        currentFrame = 0L; 
+        clip.setMicrosecondPosition(0); 
+        this.play(); 
     } 
       
     // Method to stop the audio 

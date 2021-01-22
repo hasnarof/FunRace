@@ -13,13 +13,13 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import game.Background;
-import game.GameSound;
 import game.entities.Coin;
 import game.entities.OpponentOne;
 import game.entities.OpponentThree;
 import game.entities.OpponentTwo;
 import game.entities.PlayerCar;
 import game.entities.Score;
+import game.tools.GameSound;
 
 public class Level1State extends GameState {
 	
