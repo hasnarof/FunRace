@@ -46,7 +46,7 @@ public class GameLauncher extends JFrame {
 					System.out.println("Exit");
 				}
 				else
-					setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+					f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			}
 				});
 	}
