@@ -1,6 +1,6 @@
 # FunRace
 
-This is a racing gar game created in Java to complete Object Oriented Programming Final Project. User (car) can gain points with reach coin and lose when hit other cars.
+This is a racing car game application created in Java to complete Object Oriented Programming Final Project. User (car) can gain points with reach coin and lose when hit other cars.
 
 ## How to Run
 
